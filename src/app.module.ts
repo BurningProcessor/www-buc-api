@@ -8,9 +8,14 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
+    UserModule,
+    AuthModule,
+    CategoryModule,
+    TransactionModule,
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -23,13 +28,10 @@ import { TransactionModule } from './transaction/transaction.module';
         database: configService.get('DB_NAME'),
         synchronize: true,
         entities: [__dirname + '/**/*.entity{.js, .ts}']
+        //entities: [User],
       }),
-      inject: [ConfigService]
-    }),
-    UserModule,
-    AuthModule,
-    CategoryModule,
-    TransactionModule
+      inject: [ConfigService],
+    })
   ],
   controllers: [AppController, TerrariaController],
   providers: [AppService],
