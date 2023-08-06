@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TerrariaController } from './terraria/terraria.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -33,7 +31,7 @@ import { User } from './user/entities/user.entity';
       inject: [ConfigService],
     })
   ],
-  controllers: [AppController, TerrariaController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
