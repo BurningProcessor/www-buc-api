@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -15,18 +14,23 @@ export class UserService {
 	) { }
 
 	async create(createUserDto: CreateUserDto) {
-		const existUser = await this.userRepository.findOne({
-			where: { email: createUserDto.email.toLowerCase() }
-		})
+		createUserDto.email = createUserDto.email.toLowerCase()
+
+		var thisUser = await this.takeUser(createUserDto.email, this.userRepository)
 		
-		if (existUser) throw new BadRequestException('This email alredy exist!')
+		if (thisUser) throw new BadRequestException('This email alredy exist!')
 
 		const user = await this.userRepository.save({
-			email: createUserDto.email.toLowerCase(),
+			email: createUserDto.email,
 			password: await argon2.hash(createUserDto.password),
 		})
 
-		const token = this.jwtService.sign({ email: createUserDto.email })
+		thisUser = await this.takeUser(createUserDto.email, this.userRepository)
+
+		const token = this.jwtService.sign({
+			id: thisUser.id,
+			email: createUserDto.email
+		})
 
 		return { user, token }
 	}
@@ -36,10 +40,11 @@ export class UserService {
 	}
 
 	async findOne(email: string) {
-		return await this.userRepository.findOne({
-			where: {
-				email
-			}
-		})
+		// return await this.userRepository.findOne({ where: { email } })
+		return this.takeUser(email, this.userRepository)
+	}
+
+	async takeUser(email:string, userRepository: Repository<User>) {
+		return await this.userRepository.findOne({ where: { email } })
 	}
 }

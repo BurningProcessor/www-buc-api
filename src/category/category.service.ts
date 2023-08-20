@@ -49,14 +49,6 @@ export class CategoryService {
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    // const category = await this.categoryRepository.findOne({
-    //   where: { id }
-    // })
-    // log(category)
-
-    // if (!category) this.CategoryNotFoundException()
-
-    // return await this.categoryRepository.update(id, updateCategoryDto)
     if(await this.FindCategory(id)) {
       await this.categoryRepository.update(id, updateCategoryDto)
       return 'Category UPDATE'
@@ -65,14 +57,6 @@ export class CategoryService {
   }
 
   async remove(id: number) {
-    // const category = await this.categoryRepository.findOne({
-    //   where: { id }
-    // })
-    // log(category)
-
-    // if (!category) this.CategoryNotFoundException()
-
-    // return await this.categoryRepository.delete(id)
     if(await this.FindCategory(id)) {
       await this.categoryRepository.delete(id)
       return 'Category DELETED'
@@ -81,8 +65,7 @@ export class CategoryService {
   }
 
   private async FindCategory(id: number) {
-    const category = await this.categoryRepository.findOne({ where: { id } })
-    return category
+    return await this.categoryRepository.findOne({ where: { id } })
   }
 
   private CategoryNotFoundException() { throw new NotFoundException('Category not found') }
