@@ -25,7 +25,7 @@ export class TransactionService {
 		return await this.transactionRepository.save(newTransaction)
 	}
 
-	async findAllWithPagination(id: number, page: number, limit: number){
+	async findAllWithPagination(id: number, page: number, limit: number) {
 		const transaction = await this.transactionRepository.find({
 			where: { user: { id } },
 			// relations: {
@@ -36,7 +36,7 @@ export class TransactionService {
 			take: limit,
 			skip: (page - 1) * limit
 		})
-		
+
 		return transaction
 	}
 
@@ -56,6 +56,7 @@ export class TransactionService {
 	async findAll(id: number) {
 		const transactions = await this.transactionRepository.find({
 			where: { user: { id } },
+			relations: { category: true },
 			order: { createAt: 'DESC' }
 		})
 
@@ -84,7 +85,7 @@ export class TransactionService {
 		await this.findTransaction(id)
 		return await this.transactionRepository.delete(id)
 	}
-	
+
 	async findTransaction(id: number) {
 		const transaction = await this.transactionRepository.findOne({ where: { id } })
 		if (!transaction) throw new NotFoundException('Transaction not found')
