@@ -25,13 +25,20 @@ export class TransactionService {
 		return await this.transactionRepository.save(newTransaction)
 	}
 
+	async size(id: number) {
+		const TransactionsSize = await this.transactionRepository.count({
+			where: { user: { id } }
+		})
+		return TransactionsSize
+	}
+
 	async findAllWithPagination(id: number, page: number, limit: number) {
 		const transaction = await this.transactionRepository.find({
 			where: { user: { id } },
-			// relations: {
-			// 	category: true,
-			// 	user: true
-			// },
+			relations: {
+				category: true,
+				// user: true
+			},
 			order: { createAt: 'DESC' },
 			take: limit,
 			skip: (page - 1) * limit

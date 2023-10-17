@@ -39,6 +39,12 @@ export class TransactionController {
 		return this.transactionService.findAll(+req.user.id);
 	}
 
+	@Get('size')
+	@UseGuards(JwtAuthGuard)
+	size(@Req() req) {
+		return this.transactionService.size(+req.user.id);
+	}
+
 	// url/transactions/transaction/id
 	@Get(':type/:id')
 	@UseGuards(JwtAuthGuard, AuthorGuard)
