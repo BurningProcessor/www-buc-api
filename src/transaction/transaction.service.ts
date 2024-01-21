@@ -29,6 +29,7 @@ export class TransactionService {
 		const TransactionsSize = await this.transactionRepository.count({
 			where: { user: { id } }
 		})
+		
 		return TransactionsSize
 	}
 

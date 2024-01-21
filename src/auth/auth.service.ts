@@ -13,17 +13,17 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findOne(email.toLowerCase())
-    const passwordIsMatch = await argon2.verify(user.password, password)
+    var passwordIsMatch
+    
+    if (user) passwordIsMatch = await argon2.verify(user.password, password)
 
     if (user && passwordIsMatch) return user
     else throw new BadRequestException('User or password are incorrect!')
   }
 
   async login(user: IUser) {
-    const { id, email } = user
     return {
-      id,
-      email,
+      user: user.email,
       token: this.jwtService.sign({
         id: user.id,
         email: user.email
