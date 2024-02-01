@@ -16,7 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         })
     }
 
-    async validate(user: IUser) {
+    async validate(user: IUser): Promise<IUser> {
+        // Extract userdata from Token
         return {
             id: user.id,
             email: user.email
