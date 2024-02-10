@@ -1,12 +1,26 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Version } from '@nestjs/common'
+import { AppService } from './app.service'
+import { ApiHeader } from '@nestjs/swagger'
 
+@ApiHeader({
+	name: 'version',
+	enum: ['1', '2'],
+	description: 'type version',
+	required: true,
+})
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+	constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return 'hello'
-  }
+	@Version('1')
+	@Get('hello')
+	getHello(): string {
+		return 'hello ver.1'
+	}
+
+	@Version('2')
+	@Get('hello')
+	getHelloV2(): string {
+		return 'hello ver.2'
+	}
 }
