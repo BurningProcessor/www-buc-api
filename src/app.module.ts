@@ -14,7 +14,10 @@ import { TransactionModule } from './transaction/transaction.module';
     AuthModule,
     CategoryModule,
     TransactionModule,
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({
+      envFilePath: ['.env.local', '.env'],
+      isGlobal: true
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({

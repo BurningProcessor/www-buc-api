@@ -1,6 +1,10 @@
 import { DataSource } from 'typeorm'
+import fs from 'fs'
 
-require('dotenv').config()
+var envpath = '.env'
+if (process.env.NODE_ENV != undefined) envpath = envpath + process.env.NODE_ENV
+require('dotenv').config({ path: envpath })
+console.log('LOG: ENV IS:' + envpath)
 
 export const AppDataSource = new DataSource({
 	type: 'postgres',

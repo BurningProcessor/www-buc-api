@@ -22,7 +22,8 @@
 		"migration:create": "cd ./database/migrations && typeorm migration:create",
 		"migration:generate": "npm run build && npm run typeorm migration:generate database/migrations/migration",
 		"migration:run": "npm run typeorm migration:run",
-		"migration:down": "npm run typeorm migration:revert"
+		"migration:down": "npm run typeorm migration:revert",
+		"migration:run.local": "cross-env NODE_ENV=.local npm run typeorm migration:run"
 	},
 	"dependencies": {
 		"@nestjs/common": "^10.2.8",
@@ -37,6 +38,7 @@
 		"argon2": "^0.31.1",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.0",
+		"cross-env": "^7.0.3",
 		"passport": "^0.6.0",
 		"passport-jwt": "^4.0.1",
 		"passport-local": "^1.0.0",
